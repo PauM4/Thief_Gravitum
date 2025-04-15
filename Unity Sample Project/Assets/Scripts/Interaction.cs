@@ -115,8 +115,18 @@ public class Interaction : MonoBehaviour
                 {
                     isExamining = true;
                     examinedObject = hitInfo.transform;
+
                     originalPositions[examinedObject] = examinedObject.position;
                     originalRotations[examinedObject] = examinedObject.rotation;
+
+                    // Teletransportar davant la càmera
+                    examinedObject.position = Camera.main.transform.position + Camera.main.transform.forward * 0.8f;
+
+                    // Evitar col·lisions des del principi
+                    Physics.IgnoreCollision(examinedObject.GetComponent<Collider>(), player.GetComponent<Collider>(), true);
+
+                    // Capturar posició del ratolí
+                    lastMousePosition = Input.mousePosition;
                 }
                 break;
         }
@@ -124,7 +134,6 @@ public class Interaction : MonoBehaviour
 
     void StartExamination()
     {
-        lastMousePosition = Input.mousePosition;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         pointer.SetActive(false);
@@ -145,12 +154,10 @@ public class Interaction : MonoBehaviour
     {
         if (examinedObject != null)
         {
-            examinedObject.position = Vector3.Lerp(examinedObject.position, offset.transform.position, 0.2f);
-
-            Physics.IgnoreCollision(examinedObject.GetComponent<Collider>(), player.GetComponent<Collider>(), true);
+            Vector3 targetPosition = Camera.main.transform.position + Camera.main.transform.forward * 0.8f;
+            examinedObject.position = Vector3.Lerp(examinedObject.position, targetPosition, 0.4f);
 
             RotateObject();
-            lastMousePosition = Input.mousePosition;
         }
     }
 
@@ -173,14 +180,17 @@ public class Interaction : MonoBehaviour
 
     void RotateObject()
     {
-        float XaxisRotation = -Input.GetAxis("Mouse X");
-        float YaxisRotation = Input.GetAxis("Mouse Y");
-        if (Input.GetMouseButton(1))
+        Vector3 mouseDelta = Input.mousePosition - lastMousePosition;
+
+        if (mouseDelta.sqrMagnitude > 0.01f)
         {
-            examinedObject.rotation =
-                Quaternion.AngleAxis(XaxisRotation * rotationSensitivity, transform.up) *
-                Quaternion.AngleAxis(YaxisRotation * rotationSensitivity, transform.right) *
-                examinedObject.rotation;
+            float rotationX = mouseDelta.x * rotationSensitivity;
+            float rotationY = -mouseDelta.y * rotationSensitivity;
+
+            examinedObject.Rotate(Camera.main.transform.up, rotationX, Space.World);
+            examinedObject.Rotate(Camera.main.transform.right, rotationY, Space.World);
         }
+
+        lastMousePosition = Input.mousePosition;
     }
 }
