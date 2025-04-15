@@ -61,6 +61,8 @@ public class DialogueManager : MonoBehaviour
 
         // Lanzamos el evento de "mostrar diálogo"
         onDialogueShow?.Invoke();
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
 
         // Reseteamos el texto del diálogo
         dialogueText.text = "";
@@ -100,20 +102,18 @@ public class DialogueManager : MonoBehaviour
                     if (btnText != null)
                         btnText.text = optionTexts[i];
 
+                    // Captura segura del índice para evitar error en la lambda
+                    int capturedIndex = i;
+
                     // Añadimos la acción correspondiente al onClick del botón
-                    // Además forzamos que, al final, se cierre el diálogo
                     optionButtons[i].onClick.AddListener(() =>
                     {
-                        
                         HideDialogue();
-
-                        // Ejecuta la acción de la opción, si existe
-                        optionActions[i]?.Invoke();
-
-                      
+                        optionActions[capturedIndex]?.Invoke();
                     });
                 }
             }
+
         });
     }
 
@@ -128,6 +128,9 @@ public class DialogueManager : MonoBehaviour
 
         // Llamamos al evento de "ocultar diálogo"
         onDialogueHide?.Invoke();
+
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
 
         // Reseteamos texto por si quieres evitar "basura" en la UI
         dialogueText.text = "";
