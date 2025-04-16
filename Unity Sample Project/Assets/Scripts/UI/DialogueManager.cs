@@ -8,6 +8,8 @@ public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager Instance;
 
+    [SerializeField] private Interaction interaction;
+
     [Header("Referencias de UI")]
     [Tooltip("Panel principal del diálogo (Canvas/Panel que agrupa el texto y los botones).")]
     public GameObject dialoguePanel;
@@ -59,6 +61,8 @@ public class DialogueManager : MonoBehaviour
         if (dialoguePanel != null)
             dialoguePanel.SetActive(true);
 
+        interaction.isDialogue = true;
+
         // Lanzamos el evento de "mostrar diálogo"
         onDialogueShow?.Invoke();
         Cursor.visible = true;
@@ -109,6 +113,7 @@ public class DialogueManager : MonoBehaviour
                     optionButtons[i].onClick.AddListener(() =>
                     {
                         HideDialogue();
+                        interaction.isDialogue = false;
                         optionActions[capturedIndex]?.Invoke();
                     });
                 }

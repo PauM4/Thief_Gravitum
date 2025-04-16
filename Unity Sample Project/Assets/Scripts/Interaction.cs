@@ -22,6 +22,7 @@ public class Interaction : MonoBehaviour
     public GameObject offset;
 
     public static bool isExamining = false;
+    public bool isDialogue = false;
 
     private Vector3 lastMousePosition;
     private Transform examinedObject;
@@ -53,6 +54,10 @@ public class Interaction : MonoBehaviour
         {
             StartExamination();
             Examine();
+        }
+        else if(isDialogue)
+        {
+
         }
         else
         {
