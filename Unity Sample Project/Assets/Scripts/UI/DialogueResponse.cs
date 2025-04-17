@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class DialogueTrigger : MonoBehaviour
+public class DialogueResponse : MonoBehaviour
 {
     [Header("Texto principal del diálogo")]
     [TextArea(3, 5)]
@@ -30,36 +30,6 @@ public class DialogueTrigger : MonoBehaviour
     private bool playerInRange = false;
     private bool yaActivado = false;
 
-    public bool isPermanent = false;
-    private void Update()
-    {
-        if (playerInRange && Input.GetKeyDown(interactionKey) && !yaActivado)
-        {
-            TriggerDialogue();
-            if (!isPermanent)
-            {
-                yaActivado = true;
-            }
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag(playerTag))
-        {
-            playerInRange = true;
-            
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag(playerTag))
-        {
-            playerInRange = false;
-            
-        }
-    }
 
     /// <summary>
     /// Llama al DialogueManager para mostrar el diálogo con las opciones configuradas.
@@ -79,5 +49,6 @@ public class DialogueTrigger : MonoBehaviour
             option3Text, () => option3Event?.Invoke(),
             option4Text, () => option4Event?.Invoke()
         );
+        gameObject.SetActive(false);
     }
 }
