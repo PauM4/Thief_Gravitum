@@ -80,4 +80,9 @@ public class DialogueTrigger : MonoBehaviour
             option4Text, () => option4Event?.Invoke()
         );
     }
+    
+    public void setPermanent(bool ispermanent)
+    {
+        isPermanent = ispermanent;
+    }
 }
