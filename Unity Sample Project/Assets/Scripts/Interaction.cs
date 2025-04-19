@@ -118,6 +118,7 @@ public class Interaction : MonoBehaviour
                 interactObj.Hover();
                 if (Input.GetKeyDown(KeyCode.E))
                 {
+                    
                     isExamining = true;
                     examinedObject = hitInfo.transform;
 

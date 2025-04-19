@@ -1,9 +1,11 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class SimpleInteractable : MonoBehaviour, IInteractable
 {
     private Outline outline;
-
+    public UnityEvent InteractionEvent;
+    bool hasDoneEvent = false;
     void Start()
     {
         outline = GetComponent<Outline>();
@@ -28,11 +30,24 @@ public class SimpleInteractable : MonoBehaviour, IInteractable
             outline.enabled = true;
             outline.OutlineMode = Outline.Mode.OutlineVisible;
             outline.OutlineWidth = 5;
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                StartEvent();
+            }
+
         }
     }
 
     public void Interact()
     {
         // De moment gestionat des d'Interaction.cs
+    }
+    public void StartEvent()
+    {
+        if (!hasDoneEvent && InteractionEvent != null)
+        {
+            hasDoneEvent = true;
+            InteractionEvent.Invoke();
+        }
     }
 }
