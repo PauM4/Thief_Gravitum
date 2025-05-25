@@ -5,6 +5,8 @@ public class SimpleInteractable : MonoBehaviour, IInteractable
 {
     private Outline outline;
     public UnityEvent InteractionEvent;
+    public UnityEvent CanvasEvent;
+    public UnityEvent DisableCanvasEvent;
     bool hasDoneEvent = false;
     void Start()
     {
@@ -20,6 +22,7 @@ public class SimpleInteractable : MonoBehaviour, IInteractable
         if (!Interaction.isExamining && outline != null)
         {
             outline.enabled = false;
+            DisableCanvasEvent?.Invoke();
         }
     }
 
@@ -40,6 +43,8 @@ public class SimpleInteractable : MonoBehaviour, IInteractable
             }
 
         }
+
+        CanvasEvent?.Invoke();
     }
 
     public void Interact()
@@ -54,4 +59,6 @@ public class SimpleInteractable : MonoBehaviour, IInteractable
             InteractionEvent.Invoke();
         }
     }
+
+
 }
