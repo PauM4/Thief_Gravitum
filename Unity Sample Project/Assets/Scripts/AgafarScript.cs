@@ -34,6 +34,10 @@ public class SimpleInteractable : MonoBehaviour, IInteractable
             {
                 StartEvent();
             }
+            else if(gameObject.tag == "Book")
+            {
+                StartEvent();
+            }
 
         }
     }

@@ -135,6 +135,11 @@ public class Interaction : MonoBehaviour
                     lastMousePosition = Input.mousePosition;
                 }
                 break;
+            case "Book":
+                interactObj.Hover();
+                isExamining = true;
+                break;
+
         }
     }
 
