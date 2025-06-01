@@ -17,6 +17,8 @@ public class CinematicCameraTrigger : MonoBehaviour
 
     private bool hasPlayed = false;
 
+    public FirstPersonMovement firstP;
+
     private void OnTriggerEnter(Collider other)
     {
         if (!hasPlayed && other.CompareTag("Player"))
@@ -32,6 +34,7 @@ public class CinematicCameraTrigger : MonoBehaviour
         if (playerCamera != null)
             playerCamera.enabled = false;
 
+        firstP.canmove = false;
         cinematicCamera.gameObject.SetActive(true);
 
         for (int i = 0; i < cameraPathPoints.Length - 1; i++)
@@ -65,6 +68,7 @@ public class CinematicCameraTrigger : MonoBehaviour
         if (playerCamera != null)
             playerCamera.enabled = true;
 
+        firstP.canmove = true;
         // Fade in desde negro
         if (screenFader != null)
             yield return screenFader.FadeIn();
